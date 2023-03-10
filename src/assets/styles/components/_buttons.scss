@@ -38,6 +38,13 @@
       margin-left: .5rem;
     }
   }
+  &.withdraw-btn{
+    margin-top: 3rem;
+    width: 100%;
+  }
+  &.buytoken-btn{
+    width: 40%;
+  }
   &.btn-social-icon {
     width: 50px;
     height: 50px;
@@ -48,6 +55,7 @@
     border: 1px solid rgba(#ffffff, 0.3);
     font-weight: $font-weight-medium;
     padding: 0.9375rem 1.0625rem;
+    // margin-top: 2rem;
     @media (max-width: 576px) {
       font-size: 0.6rem;
       padding: 0.4375rem 0.6625rem;

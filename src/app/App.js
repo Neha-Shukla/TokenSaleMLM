@@ -6,6 +6,7 @@ import Navbar from './shared/Navbar';
 import Sidebar from './shared/Sidebar';
 import Footer from './shared/Footer';
 import { withTranslation } from "react-i18next";
+import { Toaster } from "react-hot-toast";
 
 class App extends Component {
   state = {}
@@ -24,9 +25,29 @@ class App extends Component {
           <div className="main-panel">
             <div className="content-wrapper">
               <AppRoutes/>
+              <Toaster
+          toastOptions={{
+            success: {
+              style: {
+                background: "white",
+                color: "green",
+                fontFamily: "fantasy",
+              },
+              icon: "👏",
+            },
+            error: {
+              style: {
+                background: "white",
+                color: "red",
+                fontFamily: "fantasy",
+              },
+            },
+          }}
+        />
             </div>
             { footerComponent }
           </div>
+
         </div>
       </div>
     );

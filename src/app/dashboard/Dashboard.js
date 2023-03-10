@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component,useState,useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import Slider from "react-slick";
 import { TodoListComponent } from '../apps/TodoList'
 import { VectorMap } from "react-jvectormap"
+import { tokenSaleContract,userIncome } from '../helpers/setterFunction';
+import Cookies from 'js-cookie';
+
 
 const mapData = {
   "BZ": 75.00,
@@ -13,47 +16,69 @@ const mapData = {
   "GE": 33.25
 }
 
-export class Dashboard extends Component {
+function Dashboard() {
+  const [account,setAccount]=useState();
+  const [levelIncome,setLevelIncome]=useState(0)
+  const [referralIncome,setReferralIncome]=useState(0);
 
-  transactionHistoryData =  {
-    labels: ["Paypal", "Stripe","Cash"],
-    datasets: [{
-        data: [55, 25, 20],
-        backgroundColor: [
-          "#111111","#00d25b","#ffab00"
-        ]
+  useEffect(()=>{
+      async function getContract(){
+        let acc=Cookies.get("account")
+        if(acc){
+          setAccount(acc);
+          let income=await userIncome(acc);
+          console.log("user income is",income);
+          if(income?.levelIncome){
+            setLevelIncome(income?.levelIncome.toString())
+          }
+          if(income?.referralIncome){
+            setReferralIncome(income?.referralIncome.toString())
+          }
+        }
+        await tokenSaleContract();
       }
-    ]
-  };
+      getContract();
+  },[])
 
-  transactionHistoryOptions = {
-    responsive: true,
-    maintainAspectRatio: true,
-    segmentShowStroke: false,
-    cutoutPercentage: 70,
-    elements: {
-      arc: {
-          borderWidth: 0
-      }
-    },      
-    legend: {
-      display: false
-    },
-    tooltips: {
-      enabled: true
-    }
-  }
+  // transactionHistoryData =  {
+  //   labels: ["Paypal", "Stripe","Cash"],
+  //   datasets: [{
+  //       data: [55, 25, 20],
+  //       backgroundColor: [
+  //         "#111111","#00d25b","#ffab00"
+  //       ]
+  //     }
+  //   ]
+  // };
 
-  sliderSettings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  }
-  toggleProBanner() {
-    document.querySelector('.proBanner').classList.toggle("hide");
-  }
-  render () {
+  // transactionHistoryOptions = {
+  //   responsive: true,
+  //   maintainAspectRatio: true,
+  //   segmentShowStroke: false,
+  //   cutoutPercentage: 70,
+  //   elements: {
+  //     arc: {
+  //         borderWidth: 0
+  //     }
+  //   },      
+  //   legend: {
+  //     display: false
+  //   },
+  //   tooltips: {
+  //     enabled: true
+  //   }
+  // }
+
+  // sliderSettings = {
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1
+  // }
+  // toggleProBanner() {
+  //   document.querySelector('.proBanner').classList.toggle("hide");
+  // }
+
     return (
       <div>
         {/* <div className="row">
@@ -76,7 +101,7 @@ export class Dashboard extends Component {
             </div>
           </div>
         </div> */}
-        <div className="row">
+        {/* <div className="row">
           <div className="col-xl-3 col-sm-6 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
@@ -93,7 +118,7 @@ export class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                <h6 className="text-muted font-weight-normal">Potential growth</h6>
+                <h6 className="text-muted font-weight-normal">LEVEL INCOME</h6>
               </div>
             </div>
           </div>
@@ -113,7 +138,7 @@ export class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                <h6 className="text-muted font-weight-normal">Revenue current</h6>
+                <h6 className="text-muted font-weight-normal">REFFERAL INCOME</h6>
               </div>
             </div>
           </div>
@@ -133,32 +158,20 @@ export class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                <h6 className="text-muted font-weight-normal">Daily Income</h6>
+                <h6 className="text-muted font-weight-normal">TOTAL WITHDRAWN</h6>
               </div>
             </div>
           </div>
           <div className="col-xl-3 col-sm-6 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
-                <div className="row">
-                  <div className="col-9">
-                    <div className="d-flex align-items-center align-self-start">
-                      <h3 className="mb-0">$31.53</h3>
-                      <p className="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
-                    </div>
-                  </div>
-                  <div className="col-3">
-                    <div className="icon icon-box-success ">
-                      <span className="mdi mdi-arrow-top-right icon-item"></span>
-                    </div>
-                  </div>
-                </div>
-                <h6 className="text-muted font-weight-normal">Expense current</h6>
+               
+                <button className="btn btn-outline-light btn-rounded get-started-btn">WITHDRAWN LEVEL</button>
               </div>
             </div>
           </div>
         </div>
-        {/* <div className="row">
+        <div className="row">
           <div className="col-md-4 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
@@ -297,33 +310,34 @@ export class Dashboard extends Component {
           <div className="col-sm-4 grid-margin">
             <div className="card">
               <div className="card-body">
-                <h5>Revenue</h5>
+                <h5>Level Income</h5>
                 <div className="row">
                   <div className="col-8 col-sm-12 col-xl-8 my-auto">
                     <div className="d-flex d-sm-block d-md-flex align-items-center">
-                      <h2 className="mb-0">$32123</h2>
-                      <p className="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                      <h2 className="mb-0">{levelIncome}</h2>
+                      {/* <p className="text-success ml-2 mb-0 font-weight-medium">+3.5%</p> */}
                     </div>
-                    <h6 className="text-muted font-weight-normal">11.38% Since last month</h6>
+                    {/* <h6 className="text-muted font-weight-normal">11.38% Since last month</h6> */}
                   </div>
                   <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                    <i className="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
+                  <button className="btn btn-outline-light btn-rounded get-started-btn withdraw-btn">Withdraw</button>
+                    {/* <i className="icon-lg mdi mdi-codepen text-primary ml-auto"></i> */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-sm-4 grid-margin">
+          <div className="col-sm-4 grid-margin ">
             <div className="card">
               <div className="card-body">
-                <h5>Sales</h5>
+                <h5>Referral Income</h5>
                 <div className="row">
                   <div className="col-8 col-sm-12 col-xl-8 my-auto">
                     <div className="d-flex d-sm-block d-md-flex align-items-center">
-                      <h2 className="mb-0">$45850</h2>
-                      <p className="text-success ml-2 mb-0 font-weight-medium">+8.3%</p>
+                      <h2 className="mb-0">{referralIncome}</h2>
+                      {/* <p className="text-success ml-2 mb-0 font-weight-medium">+8.3%</p> */}
                     </div>
-                    <h6 className="text-muted font-weight-normal"> 9.61% Since last month</h6>
+                    {/* <h6 className="text-muted font-weight-normal"> 9.61% Since last month</h6> */}
                   </div>
                   <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
                     <i className="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
@@ -335,14 +349,14 @@ export class Dashboard extends Component {
           <div className="col-sm-4 grid-margin">
             <div className="card">
               <div className="card-body">
-                <h5>Purchase</h5>
+                <h5>Total Withdrawn</h5>
                 <div className="row">
                   <div className="col-8 col-sm-12 col-xl-8 my-auto">
                     <div className="d-flex d-sm-block d-md-flex align-items-center">
-                      <h2 className="mb-0">$2039</h2>
-                      <p className="text-danger ml-2 mb-0 font-weight-medium">-2.1% </p>
+                      <h2 className="mb-0">12</h2>
+                      {/* <p className="text-danger ml-2 mb-0 font-weight-medium">-2.1% </p> */}
                     </div>
-                    <h6 className="text-muted font-weight-normal">2.27% Since last month</h6>
+                    {/* <h6 className="text-muted font-weight-normal">2.27% Since last month</h6> */}
                   </div>
                   <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
                     <i className="icon-lg mdi mdi-monitor text-success ml-auto"></i>
@@ -506,8 +520,8 @@ export class Dashboard extends Component {
             </div>
           </div>
         </div> */}
-        {/* <div className="row">
-          <div className="col-md-6 col-xl-4 grid-margin stretch-card">
+        <div className="row">
+          {/* <div className="col-md-6 col-xl-4 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex flex-row justify-content-between">
@@ -614,16 +628,137 @@ export class Dashboard extends Component {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-12 col-xl-4 grid-margin stretch-card">
+          </div> */}
+          <div className="col-md-12 col-xl-12 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">To do list</h4>
+                <h4 className="card-title">REFERRAL LINK</h4>
                 <TodoListComponent />
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
+
+        <div className="row">
+          <div className="col-md-12 col-xl-12 grid-margin stretch-card">
+            <div className="card">
+              <div className="card-body buy-token">
+              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn">Buy Token(5000)</button>
+              <h6 className="preview-subject">Tokens can be purchase only once by one wallet</h6>
+                {/* <div className="d-flex flex-row justify-content-between">
+                  <h4 className="card-title">Messages</h4>
+                  <p className="text-muted mb-1 small">View all</p>
+                </div> */}
+                {/* <div className="preview-list">
+                  <div className="preview-item border-bottom">
+                    <div className="preview-thumbnail">
+                      <img src={require('../../assets/images/faces/face6.jpg')} alt="face" className="rounded-circle" />
+                    </div>
+                    <div className="preview-item-content d-flex flex-grow">
+                      <div className="flex-grow">
+                        <div className="d-flex d-md-block d-xl-flex justify-content-between">
+                          <h6 className="preview-subject">Leonard</h6>
+                          <p className="text-muted text-small">5 minutes ago</p>
+                        </div>
+                        <p className="text-muted">Well, it seems to be working now.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="preview-item border-bottom">
+                    <div className="preview-thumbnail">
+                      <img src={require('../../assets/images/faces/face8.jpg')} alt="face" className="rounded-circle" />
+                    </div>
+                    <div className="preview-item-content d-flex flex-grow">
+                      <div className="flex-grow">
+                        <div className="d-flex d-md-block d-xl-flex justify-content-between">
+                          <h6 className="preview-subject">Luella Mills</h6>
+                          <p className="text-muted text-small">10 Minutes Ago</p>
+                        </div>
+                        <p className="text-muted">Well, it seems to be working now.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="preview-item border-bottom">
+                    <div className="preview-thumbnail">
+                      <img src={require('../../assets/images/faces/face9.jpg')} alt="face" className="rounded-circle" />
+                    </div>
+                    <div className="preview-item-content d-flex flex-grow">
+                      <div className="flex-grow">
+                        <div className="d-flex d-md-block d-xl-flex justify-content-between">
+                          <h6 className="preview-subject">Ethel Kelly</h6>
+                          <p className="text-muted text-small">2 Hours Ago</p>
+                        </div>
+                        <p className="text-muted">Please review the tickets</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="preview-item border-bottom">
+                    <div className="preview-thumbnail">
+                      <img src={require('../../assets/images/faces/face11.jpg')} alt="face" className="rounded-circle" />
+                    </div>
+                    <div className="preview-item-content d-flex flex-grow">
+                      <div className="flex-grow">
+                        <div className="d-flex d-md-block d-xl-flex justify-content-between">
+                          <h6 className="preview-subject">Herman May</h6>
+                          <p className="text-muted text-small">4 Hours Ago</p>
+                        </div>
+                        <p className="text-muted">Thanks a lot. It was easy to fix it .</p>
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
+              </div>
+            </div>
+          </div>
+          {/* <div className="col-md-6 col-xl-4 grid-margin stretch-card">
+            <div className="card">
+              <div className="card-body">
+                <h4 className="card-title">Portfolio Slide</h4>
+                <Slider className="portfolio-slider" {...this.sliderSettings}>
+                  <div className="item">
+                    <img src={require('../../assets/images/dashboard/Rectangle.jpg')} alt="carousel-item" />
+                  </div>
+                  <div className="item">
+                    <img src={require('../../assets/images/dashboard/Img_5.jpg')} alt="carousel-item" />
+                  </div>
+                  <div className="item">
+                    <img src={require('../../assets/images/dashboard/img_6.jpg')} alt="carousel-item" />
+                  </div>
+                </Slider>
+                <div className="d-flex py-4">
+                  <div className="preview-list w-100">
+                    <div className="preview-item p-0">
+                      <div className="preview-thumbnail">
+                        <img src={require('../../assets/images/faces/face12.jpg')} className="rounded-circle" alt="face" />
+                      </div>
+                      <div className="preview-item-content d-flex flex-grow">
+                        <div className="flex-grow">
+                          <div className="d-flex d-md-block d-xl-flex justify-content-between">
+                            <h6 className="preview-subject">CeeCee Bass</h6>
+                            <p className="text-muted text-small">4 Hours Ago</p>
+                          </div>
+                          <p className="text-muted">Well, it seems to be working now.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-muted">Well, it seems to be working now. </p>
+                <div className="progress progress-md portfolio-progress">
+                  <div className="progress-bar bg-success" role="progressbar" style={{width: '50%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div> */}
+          {/* <div className="col-md-12 col-xl-12 grid-margin stretch-card">
+            <div className="card">
+              <div className="card-body">
+                <h4 className="card-title">REFERRAL LINK</h4>
+                <TodoListComponent />
+              </div>
+            </div>
+          </div> */}
+        </div>
         {/* <div className="row">
           <div className="col-12">
             <div className="card">
@@ -716,6 +851,6 @@ export class Dashboard extends Component {
       </div> 
     );
   }
-}
+
 
 export default Dashboard;

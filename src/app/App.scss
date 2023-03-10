@@ -68,3 +68,10 @@
 @import "../assets/styles/sidebar";
 @import "../assets/styles/footer";
 @import "../assets/styles/layout";
+
+.buy-token{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

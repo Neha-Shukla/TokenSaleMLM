@@ -128,13 +128,13 @@ export class TodoListComponent extends Component {
                     <input 
                         type="text" 
                         className="form-control h-auto" 
-                        placeholder="What do you need to do today?" 
+                        placeholder="Refferal Link" 
                         value={this.state.inputValue} 
                         onChange={this.inputChangeHandler}
                         required />
-                    <button type="submit" className="btn btn-primary">Add</button>
+                    <button type="submit" className="btn btn-primary">COPY</button>
                 </form>
-                <div className="list-wrapper">
+                {/* <div className="list-wrapper">
                     <ul className="d-flex flex-column todo-list">
                         {this.state.todos.map((todo, index) =>{
                             return <ListItem 
@@ -145,7 +145,7 @@ export class TodoListComponent extends Component {
                             >{todo.task}</ListItem>
                         })}
                     </ul>
-                </div>
+                </div> */}
             </>
         )
     }

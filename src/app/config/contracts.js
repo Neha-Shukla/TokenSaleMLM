@@ -1,0 +1,2 @@
+export  const tokenSale="0x444c2b71C0f94040E9c01eF760a409Ac1B01f651";
+export const TokenBEP20="0xF50b911F4B6CdE7CBCfCb68746766931E9bbD9DB";

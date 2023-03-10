@@ -30770,7 +30770,7 @@ body {
   flex-direction: row;
   padding-left: 0;
   padding-right: 0;
-  width: calc(100% - 244px);
+  width: calc(100% - 0px);
   transition: width 0.25s ease, margin 0.25s ease;
 }
 .page-body-wrapper.full-page-wrapper {
@@ -31735,6 +31735,13 @@ div.tagsinput {
 }
 .btn.btn-icon-text .btn-icon-append {
   margin-left: 0.5rem;
+}
+.btn.withdraw-btn {
+  margin-top: 3rem;
+  width: 100%;
+}
+.btn.buytoken-btn {
+  width: 40%;
 }
 .btn.btn-social-icon {
   width: 50px;
@@ -34336,7 +34343,7 @@ svg {
 .navbar {
   font-weight: normal;
   background: #191c24;
-  left: 244px;
+  left: 0px;
   transition: left 0.25s ease;
   -webkit-transition: left 0.25s ease;
   -moz-transition: left 0.25s ease;
@@ -34353,7 +34360,7 @@ svg {
   -moz-transition: width 0.25s ease, background 0.25s ease;
   -ms-transition: width 0.25s ease, background 0.25s ease;
   background: #191c24;
-  width: 244px;
+  width: 0px;
   height: 70px;
 }
 @media (max-width: 991px) {
@@ -34373,7 +34380,7 @@ svg {
   color: #252b3e;
 }
 .navbar .navbar-brand-wrapper .navbar-brand img {
-  width: calc(244px - 120px );
+  width: calc(0px - 120px );
   max-width: 100%;
   height: 28px;
   margin: auto;
@@ -34697,7 +34704,7 @@ svg {
   background: #191c24;
   font-weight: normal;
   padding: 0;
-  width: 244px;
+  width: 0px;
   z-index: 11;
   transition: width 0.25s ease, background 0.25s ease;
   -webkit-transition: width 0.25s ease, background 0.25s ease;
@@ -34710,7 +34717,7 @@ svg {
   -moz-transition: width 0.25s ease, background 0.25s ease;
   -ms-transition: width 0.25s ease, background 0.25s ease;
   background: #191c24;
-  width: 244px;
+  width: 0px;
   height: 70px;
 }
 @media (max-width: 991px) {
@@ -34730,7 +34737,7 @@ svg {
   color: #252b3e;
 }
 .sidebar .sidebar-brand-wrapper .sidebar-brand img {
-  width: calc(244px - 120px );
+  width: calc(0px - 120px );
   max-width: 100%;
   height: 28px;
   margin: auto;
@@ -35072,7 +35079,7 @@ svg {
     top: 70px;
     bottom: 0;
     overflow: auto;
-    right: -244px;
+    right: 0px;
     transition: all 0.25s ease-out;
   }
   .sidebar-offcanvas.active {
@@ -35424,7 +35431,7 @@ svg {
     max-height: none;
   }
   .sidebar-fixed .page-body-wrapper {
-    margin-left: 244px;
+    margin-left: 0px;
   }
   .sidebar-fixed.sidebar-icon-only .page-body-wrapper {
     margin-left: 70px;
@@ -35438,7 +35445,7 @@ svg {
   }
   .boxed-layout .navbar {
     right: calc((100% - 1200px) / 2);
-    left: calc(((100% - 1200px) / 2) + 244px);
+    left: calc(((100% - 1200px) / 2) + 0px);
   }
   .boxed-layout .navbar.fixed-top {
     margin: auto;
@@ -35496,7 +35503,7 @@ svg {
 }
 @media (min-width: 992px) {
   .rtl .navbar {
-    right: 244px;
+    right: 0px;
     left: 0;
     transition: left 0.25s ease;
     -webkit-transition: right 0.25s ease;
@@ -35525,4 +35532,11 @@ svg {
 .rtl.sidebar-icon-only .sidebar .nav.sub-menu .nav-item .nav-link:before {
   right: 0;
   left: unset;
+}
+
+.buy-token {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }/*# sourceMappingURL=App.css.map */
