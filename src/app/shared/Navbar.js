@@ -5,11 +5,14 @@ import Modal from '../connectWallet/Modal/Modal';
 import Cookies from 'js-cookie';
 import toast from "react-hot-toast";
 import { getBalance } from '../helpers/getterFunction';
+import { userIncome } from '../helpers/setterFunction';
 function Navbar() {
 
   const [showModal, setShowModal] = useState(false);
   const [account, setAccount] = useState();
   const [bnbBalance, setBnbBalance] = useState(0);
+  const [income, setIncome] = useState({})
+
   useEffect(() => {
     async function getAccount() {
       try {
@@ -19,6 +22,9 @@ function Navbar() {
           let bal = await getBalance(acc);
           console.log("balance is---->", bal);
           setBnbBalance(bal);
+          let _income = await userIncome(acc);
+          
+          setIncome(_income)
         }
         console.log("account is ----->", acc);
       }
@@ -55,7 +61,14 @@ function Navbar() {
             </li>
           </ul> */}
         <ul className="navbar-nav navbar-nav-right">
-
+        
+        {income?.data?.tokensReceived &&
+          <div className="text-md-center text-xl-left">
+            <h6 className="mb-1">Referrer</h6>
+            <p className="text-muted mb-0" style={{marginRight: "10px"}}>{income?.data?.referrer ? income?.data?.referrer : ""}</p>
+          </div>
+        }
+        
           <div className="text-md-center text-xl-left">
             <h6 className="mb-1">Balance</h6>
             <p className="text-muted mb-0">{bnbBalance} BNB</p>
