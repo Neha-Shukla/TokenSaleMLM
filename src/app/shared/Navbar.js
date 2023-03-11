@@ -63,6 +63,7 @@ function Navbar() {
 
   const logout = () => {
     Cookies.remove("account");
+    localStorage.clear()
     toast.success("logout successfully");
     window.location.reload();
   }

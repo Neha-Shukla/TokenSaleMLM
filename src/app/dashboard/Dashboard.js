@@ -25,34 +25,27 @@ function Dashboard() {
   useEffect(() => {
     const fetch = async () => {
       let provider = await getProvider()
-      provider.on("accountsChanged", (accounts) => {
-        console.log(accounts);
-        Cookies.set("account", accounts[0], {
-          expires: 7,
+      if (provider) {
+        provider.on("accountsChanged", (accounts) => {
+          console.log(accounts);
+          Cookies.set("account", accounts[0], {
+            expires: 7,
+          });
+          eventEmitter.emit("ReloadAccount")
+          setReload(!reload)
         });
-        eventEmitter.emit("ReloadAccount")
-        setReload(!reload)
-      });
 
-      // Subscribe to chainId change
-      provider.on("chainChanged", async (chainId) => {
-        console.log(chainId);
-        await provider.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: targetNetworkId }],
+        // Subscribe to chainId change
+        provider.on("chainChanged", async (chainId) => {
+          console.log(chainId);
+          await provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: targetNetworkId }],
+          });
+          setReload(!reload)
         });
-        setReload(!reload)
-      });
+      }
 
-      // Subscribe to session connection
-      provider.on("connect", () => {
-        console.log("connect");
-      });
-
-      // Subscribe to session disconnection
-      provider.on("disconnect", (code, reason) => {
-        console.log(code, reason);
-      });
     }
     fetch()
   })
@@ -232,10 +225,12 @@ function Dashboard() {
             <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
               <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : (DEFAULT_REF + " (default)")}></input>
-              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived} onClick={() => {
+              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={() => {
                 handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
                 setReload(!reload)
-              }}>{income?.data?.tokensReceived ? "Already Purchased!!" : "Buy Token (5000)"}</button>
+              }}>
+                {income?.data?.tokensReceived ? "Already Purchased!!" : "Buy Token (5000)"}</button>
+              <br></br>
               <h6 className="preview-subject">Tokens can be purchase only once by one wallet</h6>
 
             </div>

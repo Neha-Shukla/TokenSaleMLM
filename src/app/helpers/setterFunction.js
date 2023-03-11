@@ -6,10 +6,20 @@ import tokenBep20Abi from "../config/tokenBEP.json"
 import toast from "react-hot-toast";
 import BigNumber from "bignumber.js"
 import { getCurrentProvider } from "../connectWallet";
+import { RPC } from "./constants";
 
 const targetNetworkId = '0x61';
 export const exportInstance = async (SCAddress, ABI) => {
   let pro = await getCurrentProvider()
+  if (!pro) {
+    let pro = new ethers.providers.JsonRpcProvider(RPC)
+    let a = new ethers.Contract(SCAddress, ABI, pro);
+    if (a) {
+      return a;
+    } else {
+      return {};
+    }
+  }
   console.log("pro", pro)
   let provider = pro;
   let signer = provider.getSigner();

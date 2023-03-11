@@ -1,7 +1,7 @@
 {
   "name": "corona-react",
   "version": "1.1.0",
-  "homepage": "/",
+  "homepage": "",
   "private": true,
   "dependencies": {
     "@lourenci/react-kanban": "^0.13.0",

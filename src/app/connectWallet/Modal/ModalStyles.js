@@ -92,13 +92,15 @@ const useStyles = createUseStyles({
     walletHeading: {
         fontFamily: "serif",
         fontSize: "initial",
-        paddingBottom: "20px"
+        paddingBottom: "20px",
+        color: "black"
     },
 
     walletMainHeading: {
         textAlign: "center",
         paddingBottom: "11px",
-        textDecoration: "underline"
+        textDecoration: "underline",
+        color: "black"
     }
 });
 

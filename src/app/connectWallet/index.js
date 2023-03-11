@@ -19,7 +19,9 @@ export const walletConnect = async () => {
         await _provider.enable();
         const res = await web3Provider.listAccounts();
         console.log("Accounts", res)
-
+        Cookies.set("account", res[0], {
+            expires: 7,
+        });
         console.log("Provider", _provider)
         // let resp = await checkIfOwnerExist({ walletAddress: res[0] })
         // console.log("res", resp)
@@ -36,6 +38,7 @@ export const walletConnect = async () => {
         //     localStorage.setItem("decrypt_redeem_connectedWallet", "walletConnect")
         //     window.location.reload()
         // }
+        window.location.reload()
         return _provider
     }
     catch (err) {
