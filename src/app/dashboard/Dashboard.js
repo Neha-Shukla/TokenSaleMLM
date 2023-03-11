@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { DEFAULT_REF } from '../helpers/constants';
 import { ethers } from "ethers";
+import { checkNetwork, switchNetwork } from '../helpers/setterFunction';
 import { withdrawLevelIncome } from '../helpers/setterFunction';
 import { BallTriangle, InfinitySpin } from 'react-loader-spinner'
 import moment from "moment"
@@ -24,15 +25,30 @@ function Dashboard() {
   useEffect(() => {
     async function getContract() {
       setLoading(true)
-      let acc = Cookies.get("account")
-      if (acc) {
-        setAccount(acc);
-        let _income = await userIncome(acc);
-        console.log("user income is", _income);
-        setIncome(_income)
+      try {
+        let acc = Cookies.get("account")
+        if (acc) {
+          setAccount(acc);
+          let network = await checkNetwork();
+          console.log("network chain is", network);
+          if (network == false) {
+            alert("Please switch newtork to BNB");
+            await switchNetwork();
+
+            // return;
+          }
+          let _income = await userIncome(acc);
+          console.log("user income is", _income);
+          setIncome(_income)
+        }
+        await tokenSaleContract();
+        setLoading(false)
       }
-      await tokenSaleContract();
-      setLoading(false)
+      catch (err) {
+        console.log("err", err)
+        setLoading(false)
+      }
+
     }
     getContract();
   }, [reload, Cookies.get("account")])
@@ -43,7 +59,7 @@ function Dashboard() {
     < div >
 
       {console.log("income", income)}
-      <div className='d-flex'>
+      <div className='d-flex loader'>
         {loading ? <BallTriangle
           height={100}
           width={100}
@@ -153,7 +169,7 @@ function Dashboard() {
           <div className="card">
             <div className="card-body">
               <h4 className="card-title">REFERRAL LINK</h4>
-              <input type="text" disabled={true} value={account ? `http://localhost:3000/refAdd/${account}` : ""}></input>
+              <input type="text" className='refferalLink' disabled={true} value={account ? `http://localhost:3000/refAdd/${account}` : ""}></input>
             </div>
           </div>
         </div>
@@ -162,16 +178,12 @@ function Dashboard() {
       <div className="row">
         <div className="col-md-12 col-xl-12 grid-margin stretch-card">
           <div className="card">
-            {!income?.data?.tokensReceived && <>
+
+            <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
               <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : (DEFAULT_REF + " (default)")}></input>
-            </>
-            }
-            <div className="card-body buy-token">
-              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived} onClick={async () => {
-                setFunctionCallLoad(true)
-                await handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
-                setFunctionCallLoad(false)
+              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived} onClick={() => {
+                handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
                 setReload(!reload)
               }}>{income?.data?.tokensReceived ? "Already Purchased!!" : "Buy Token (5000)"}</button>
               <h6 className="preview-subject">Tokens can be purchase only once by one wallet</h6>

@@ -2,11 +2,13 @@ import { ethers } from "ethers";
 import { TokenBEP20, tokenSale } from "../config/contracts";
 import tokenSaleABI from "../config/tokenSale.json"
 import tokenBep20Abi from "../config/tokenBEP.json"
+
 import toast from "react-hot-toast";
 import BigNumber from "bignumber.js"
 
+const targetNetworkId = '0x61';
 export const exportInstance = async (SCAddress, ABI) => {
-  let provider = new ethers.providers.Web3Provider(window.ethereum);
+  let provider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-2-s3.binance.org:8545");
   let signer = provider.getSigner();
   let a = new ethers.Contract(SCAddress, ABI, signer);
 
@@ -24,6 +26,10 @@ export const tokenSaleContract = async () => {
 }
 
 export const userIncome = async (address) => {
+    let network=checkNetwork();
+    if(network==false){
+        await switchNetwork();
+    }
   let contract = await tokenSaleContract();
   console.log("contract is---->", contract);
   let data = await contract.users(address);
@@ -37,6 +43,10 @@ export const userIncome = async (address) => {
 
 
 export const handleBuyToken = async (account, ref) => {
+    let network=checkNetwork();
+    if(network==false){
+        await switchNetwork();
+    }
   try {
     let contract = await tokenSaleContract();
     console.log("contract is---->", contract);
@@ -72,6 +82,10 @@ export const handleBuyToken = async (account, ref) => {
 }
 
 export const withdrawLevelIncome = async (account) => {
+    let network=checkNetwork();
+    if(network==false){
+        await switchNetwork();
+    }
   try {
     let es;
     let contract = await tokenSaleContract();
@@ -101,3 +115,31 @@ export const withdrawLevelIncome = async (account) => {
     return false
   }
 }
+
+
+export const checkNetwork = async () => {
+    if (window.ethereum) {
+      const currentChainId = await window.ethereum.request({
+        method: 'eth_chainId',
+      });
+  
+      // return true if network id is the same
+      console.log("current chain id is",currentChainId,process.env.ChainID);
+      if (currentChainId ==targetNetworkId) return true;
+      // return false is network id is different
+      return false;
+    }
+  };
+
+ export const switchNetwork = async () => {
+    
+    
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: targetNetworkId }],
+          });
+          // refresh
+          window.location.reload();
+    
+    
+  };

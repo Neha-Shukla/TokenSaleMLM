@@ -31192,6 +31192,25 @@ code {
   }
 }
 /* Dashboard */
+.refferalLink {
+  width: 100%;
+}
+
+#refAddress {
+  width: 65%;
+  margin-bottom: 1rem;
+}
+
+.loader {
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5294117647);
+}
+
 .dashboard-vector-map {
   width: 100%;
   height: 300px;
