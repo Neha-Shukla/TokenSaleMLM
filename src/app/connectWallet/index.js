@@ -8,6 +8,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider"
 import Cookies from 'js-cookie';
 // import { Logout } from "helpers/setters";
 import { supportedRpcs } from "./supportedRpcs";
+import { CHAIN_ID, targetNetworkId } from "../helpers/constants";
 // import { chainId, account, connectedrole } from "config/localStorageNames";
 
 export const walletConnect = async () => {
@@ -34,8 +35,14 @@ export const walletConnect = async () => {
         //     console.log("heree3333")
         //     localStorage.setItem(account, res[0])
         //     localStorage.setItem(connectedrole, "owner")
-        //     localStorage.setItem(chainId, JSON.parse(localStorage.getItem("walletconnect"))?.connected === true ? JSON.parse(localStorage.getItem("walletconnect"))?.chainId : "")
-        //     localStorage.setItem("decrypt_redeem_connectedWallet", "walletConnect")
+        localStorage.setItem("chainId", JSON.parse(localStorage.getItem("walletconnect"))?.connected === true ? JSON.parse(localStorage.getItem("walletconnect"))?.chainId : "")
+        if (JSON.parse(localStorage.getItem("walletconnect"))?.chainId != CHAIN_ID) {
+            await _provider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: targetNetworkId }],
+            });
+        }
+        localStorage.setItem("decrypt_redeem_connectedWallet", "walletConnect")
         //     window.location.reload()
         // }
         window.location.reload()

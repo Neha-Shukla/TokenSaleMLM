@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { handleBuyToken, handleCopyToClipboard, tokenSaleContract, userIncome } from '../helpers/setterFunction';
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
-import { DEFAULT_REF } from '../helpers/constants';
+import { CHAIN_ID, DEFAULT_REF } from '../helpers/constants';
 import { ethers } from "ethers";
 import { checkNetwork, switchNetwork } from '../helpers/setterFunction';
 import { withdrawLevelIncome } from '../helpers/setterFunction';
@@ -26,6 +26,9 @@ function Dashboard() {
   useEffect(() => {
     const fetch = async () => {
       let provider = await getProvider()
+
+      console.log("proo", provider)
+
       if (provider) {
         provider.on("accountsChanged", (accounts) => {
           console.log(accounts);
@@ -39,10 +42,14 @@ function Dashboard() {
         // Subscribe to chainId change
         provider.on("chainChanged", async (chainId) => {
           console.log(chainId);
-          await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: targetNetworkId }],
-          });
+          if (chainId != CHAIN_ID) {
+            console.log("herrr")
+
+            await provider.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: targetNetworkId }],
+            });
+          }
           setReload(!reload)
         });
       }
@@ -225,9 +232,14 @@ function Dashboard() {
 
             <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
-              <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : (DEFAULT_REF + " (default)")}></input>
+              <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : ""}></input>
               <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={() => {
-                if (ethers.utils.isAddress(refAddress)) {
+
+                if (refAddress?.toLowerCase() === account?.toLowerCase()) {
+                  toast.error("You can't be your own referrer");
+                  return
+                }
+                if (!ethers.utils.isAddress(refAddress)) {
                   toast.error("Valid Referrer Address Required");
                   return
                 }

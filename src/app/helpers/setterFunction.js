@@ -6,9 +6,9 @@ import tokenBep20Abi from "../config/tokenBEP.json"
 import toast from "react-hot-toast";
 import BigNumber from "bignumber.js"
 import { getCurrentProvider } from "../connectWallet";
-import { RPC } from "./constants";
+import { RPC, targetNetworkId } from "./constants";
 
-const targetNetworkId = '0x61';
+
 export const exportInstance = async (SCAddress, ABI) => {
   let pro = await getCurrentProvider()
   if (!pro) {
@@ -38,10 +38,10 @@ export const tokenSaleContract = async () => {
 }
 
 export const userIncome = async (address) => {
-  let network = checkNetwork();
-  if (network == false) {
-    await switchNetwork();
-  }
+  // let network = checkNetwork();
+  // if (network == false) {
+  //   await switchNetwork();
+  // }
   let contract = await tokenSaleContract();
   console.log("contract is---->", contract);
   let data = await contract.users(address);
@@ -55,10 +55,10 @@ export const userIncome = async (address) => {
 
 
 export const handleBuyToken = async (account, ref) => {
-  let network = checkNetwork();
-  if (network == false) {
-    await switchNetwork();
-  }
+  // let network = checkNetwork();
+  // if (network == false) {
+  //   await switchNetwork();
+  // }
   try {
     let contract = await tokenSaleContract();
     console.log("contract is---->", contract);
@@ -94,10 +94,10 @@ export const handleBuyToken = async (account, ref) => {
 }
 
 export const withdrawLevelIncome = async (account) => {
-  let network = checkNetwork();
-  if (network == false) {
-    await switchNetwork();
-  }
+  // let network = checkNetwork();
+  // if (network == false) {
+  //   await switchNetwork();
+  // }
   try {
     let es;
     let contract = await tokenSaleContract();
@@ -137,7 +137,7 @@ export const checkNetwork = async () => {
 
     // return true if network id is the same
     console.log("current chain id is", currentChainId, process.env.ChainID);
-    if (currentChainId == targetNetworkId) return true;
+    if (currentChainId === targetNetworkId) return true;
     // return false is network id is different
     return false;
   }
