@@ -59,8 +59,10 @@ function Dashboard() {
     < div >
 
       {console.log("income", income)}
-      <div className='d-flex loader'>
-        {loading ? <BallTriangle
+      
+        {loading ?
+          <div className='d-flex loader'>
+         <BallTriangle
           height={100}
           width={100}
           radius={5}
@@ -69,7 +71,7 @@ function Dashboard() {
           wrapperClass={{}}
           wrapperStyle=""
           visible={true}
-        /> : ""}</div>
+        /></div> : ""}
 
       {functionCallLoad ? <InfinitySpin
         width='200'
