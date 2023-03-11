@@ -20,7 +20,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(false)
   const [reload, setReload] = useState(false)
   const [functionCallLoad, setFunctionCallLoad] = useState(false)
-  const { refAddress } = useParams()
+  const [refAddress, setRefAddress] = useState()
   console.log("refAddress", refAddress)
 
   useEffect(() => {
@@ -232,7 +232,7 @@ function Dashboard() {
 
             <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
-              <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : ""}></input>
+              <input id="refAddress" type="text" disabled={!account} value={refAddress} onChange={(e) => { setRefAddress(e.target.value) }}></input>
               <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={() => {
 
                 if (refAddress?.toLowerCase() === account?.toLowerCase()) {
