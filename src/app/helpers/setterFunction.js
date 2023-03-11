@@ -65,7 +65,7 @@ export const handleBuyToken = async (account, ref) => {
     return data;
   }
   catch (err) {
-    toast.error("Error while buying..", err.message)
+    toast.error("Error while buying.." + err.message)
     console.log("error", err.code)
     return false
   }
@@ -80,7 +80,7 @@ export const withdrawLevelIncome = async (account) => {
     }
     catch (err) {
       console.log("errrr", err)
-      toast.error("Error while buying.." + err.data?.message)
+      toast.error("Error while buying.." + err.code)
       console.log("error", err.code)
       return false
     }
@@ -96,7 +96,7 @@ export const withdrawLevelIncome = async (account) => {
     return data
   }
   catch (err) {
-    toast.error("Error while buying..")
+    toast.error("Error while buying.." + err.code)
     console.log("error")
     return false
   }

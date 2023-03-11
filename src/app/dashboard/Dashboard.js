@@ -7,6 +7,8 @@ import { DEFAULT_REF } from '../helpers/constants';
 import { ethers } from "ethers";
 import { withdrawLevelIncome } from '../helpers/setterFunction';
 import { BallTriangle, InfinitySpin } from 'react-loader-spinner'
+import moment from "moment"
+import Clock from './clock';
 
 function Dashboard() {
   const [account, setAccount] = useState();
@@ -16,6 +18,8 @@ function Dashboard() {
   const [functionCallLoad, setFunctionCallLoad] = useState(false)
   const { refAddress } = useParams()
   console.log("refAddress", refAddress)
+
+
 
   useEffect(() => {
     async function getContract() {
@@ -66,15 +70,26 @@ function Dashboard() {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h2 className="mb-0">{income?.data?.levelIncome ? ethers.utils.formatEther(income?.data?.levelIncome?.toString()).toString() : 0}</h2>
+
+                    {Number(income?.data?.levelIncome) > 0 &&
+                      <>
+                        <br></br>
+                        <h5>Next Withdraw In</h5>
+                        <Clock deadline={moment.utc((Number(income?.data?.nextWithdrawnTime)) * 1000).local().format()}></Clock></>}
                   </div>
                 </div>
+                {console.log("Number(income?.data?.nextWithdrawnTime) < new Date().valueOf()", Number(income?.data?.nextWithdrawnTime), new Date().valueOf())}
                 <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                  <button className="btn btn-outline-light btn-rounded get-started-btn withdraw-btn" disabled={!income?.isWithdrawEnabled || Number(ethers.utils.formatEther(income?.levelIncome?.toString()).toString()) <= 0} onClick={async () => {
-                    setFunctionCallLoad(true)
-                    await withdrawLevelIncome(account)
-                    setFunctionCallLoad(false)
-                    setReload(!reload)
-                  }}>Withdraw</button>
+                  <button className="btn btn-outline-light btn-rounded get-started-btn withdraw-btn"
+                    disabled={!income?.isWithdrawEnabled
+                      || Number(ethers.utils.formatEther(income?.data?.levelIncome?.toString()).toString()) <= 0
+                      || Number(income?.data?.nextWithdrawnTime * 1000 > new Date().valueOf())
+                    } onClick={async () => {
+                      setFunctionCallLoad(true)
+                      await withdrawLevelIncome(account)
+                      setFunctionCallLoad(false)
+                      setReload(!reload)
+                    }}>Withdraw</button>
                 </div>
               </div>
             </div>
