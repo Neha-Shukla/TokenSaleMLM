@@ -40,7 +40,7 @@ function Navbar () {
         </div>
         <div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
           <button className="navbar-toggler align-self-center" type="button" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
-            <span className="mdi mdi-menu"></span>
+            {/* <span className="mdi mdi-menu"></span> */}
           </button>
           {/* <ul className="navbar-nav w-100">
             <li className="nav-item w-100">
@@ -68,7 +68,7 @@ function Navbar () {
                   //  setShowModal(true)
                   logout();
                   }}>{account.slice(0,5)}....{account.slice(account.length-5,account.length)}</button>
-                  <i className="mdi mdi-menu-down d-none d-sm-block"></i>
+                  {/* <i className="mdi mdi-menu-down d-none d-sm-block"></i> */}
                 </div>
               </>):(<><div className="navbar-profile">
                   
