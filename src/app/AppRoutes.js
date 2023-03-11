@@ -28,7 +28,7 @@ class AppRoutes extends Component {
       <Suspense fallback={<Spinner />}>
         <Switch>
           <Route exact path="/" component={Dashboard} />
-          <Route exact path="/refAdd/:refAddress" component={Dashboard} />
+          <Route exact path="/:refAddress" component={Dashboard} />
           <Route path="/error-pages/error-404" component={Error404} />
           <Route path="/error-pages/error-500" component={Error500} />
 

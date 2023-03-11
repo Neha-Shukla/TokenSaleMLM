@@ -222,7 +222,7 @@ function Dashboard() {
               <div onClick={() => {
                 handleCopyToClipboard(`https://lucreway.com/refAdd/${account}`)
               }}>
-                <input type="text" className='refferalLink' disabled={true} value={account ? `https://lucreway.com/refAdd/${account}` : ""}></input>
+                <input type="text" className='refferalLink' disabled={true} value={account ? `https://lucreway.com/${account}` : ""}></input>
               </div>
             </div>
           </div>
