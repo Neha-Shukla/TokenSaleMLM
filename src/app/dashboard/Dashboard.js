@@ -29,14 +29,14 @@ function Dashboard() {
         let acc = Cookies.get("account")
         if (acc) {
           setAccount(acc);
-          // let network = await checkNetwork();
-          // console.log("network chain is", network);
-          // if (network == false) {
-          //   alert("Please switch newtork to BNB");
-          //   await switchNetwork();
+          let network = await checkNetwork();
+          console.log("network chain is", network);
+          if (network === false) {
+            alert("Please switch newtork to BNB");
+            await switchNetwork();
 
-          //   // return;
-          // }
+            // return;
+          }
           let _income = await userIncome(acc);
           console.log("user income is", _income);
           setIncome(_income)
@@ -191,9 +191,9 @@ function Dashboard() {
             <div className="card-body">
               <h4 className="card-title">REFERRAL LINK</h4>
               <div onClick={() => {
-                handleCopyToClipboard(`http://localhost:3000/refAdd/${account}`)
+                handleCopyToClipboard(`https://lucreway.com/refAdd/${account}`)
               }}>
-                <input type="text" className='refferalLink' disabled={true} value={account ? `http://localhost:3000/refAdd/${account}` : ""}></input>
+                <input type="text" className='refferalLink' disabled={true} value={account ? `https://lucreway.com/refAdd/${account}` : ""}></input>
               </div>
             </div>
           </div>

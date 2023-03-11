@@ -49,6 +49,19 @@
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "newTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "setWithdrawTime",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
                 "name": "_price",
                 "type": "uint256"
             },
@@ -65,6 +78,19 @@
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            }
+        ],
+        "name": "withdrawBNB",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
     },
     {
         "inputs": [
