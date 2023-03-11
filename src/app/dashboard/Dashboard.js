@@ -194,7 +194,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        {income?.data?.tokensReceived &&
+        {/* {income?.data?.tokensReceived &&
           <div className="col-sm-4 grid-margin">
             <div className="card">
               <div className="card-body">
@@ -210,11 +210,11 @@ function Dashboard() {
               </div>
             </div>
           </div>
-        }
+        } */}
       </div >
 
       <div className="row">
-        <div className="col-md-12 col-xl-12 grid-margin stretch-card">
+        <div className="col-md-6 col-xl-6 grid-margin stretch-card">
           <div className="card">
             <div className="card-body">
               <h4 className="card-title">REFERRAL LINK</h4>
@@ -226,9 +226,24 @@ function Dashboard() {
             </div>
           </div>
         </div>
+        <div className="col-md-6 col-xl-6 grid-margin stretch-card">
+          <div className="card">
+
+            <div className="card-body buy-token">
+              <label for="refAddress">Referred By</label>
+              <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : (DEFAULT_REF + " (default)")}></input>
+              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived} onClick={() => {
+                handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
+                setReload(!reload)
+              }}>{income?.data?.tokensReceived ? "Already Purchased!!" : "Buy Token (5000)"}</button>
+              <h6 className="preview-subject">Tokens can be purchase only once by one wallet</h6>
+
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="row">
+      {/* <div className="row">
         <div className="col-md-12 col-xl-12 grid-margin stretch-card">
           <div className="card">
 
@@ -248,7 +263,7 @@ function Dashboard() {
           </div>
         </div>
 
-      </div>
+      </div> */}
 
     </div >
   );
