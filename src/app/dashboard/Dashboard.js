@@ -12,6 +12,7 @@ import moment from "moment"
 import Clock from './clock';
 import { getCurrentProvider, getProvider } from '../connectWallet';
 import eventEmitter from '../events/events';
+import { toast } from 'react-hot-toast';
 const targetNetworkId = '0x61';
 function Dashboard() {
   const [account, setAccount] = useState();
@@ -226,6 +227,12 @@ function Dashboard() {
               <label for="refAddress">Referred By</label>
               <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : (DEFAULT_REF + " (default)")}></input>
               <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={() => {
+                if (ethers.utils.isAddress(refAddress)) {
+                  toast.error("Valid Referrer Address Required");
+                  return
+                }
+                setFunctionCallLoad(true)
+
                 handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
                 setReload(!reload)
               }}>
@@ -237,28 +244,6 @@ function Dashboard() {
           </div>
         </div>
       </div>
-
-      {/* <div className="row">
-        <div className="col-md-12 col-xl-12 grid-margin stretch-card">
-          <div className="card">
-
-            <div className="card-body buy-token">
-              <label for="refAddress">Referred By</label>
-              <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : (DEFAULT_REF + " (default)")}></input>
-              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={() => {
-                setFunctionCallLoad(true)
-                handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
-                setFunctionCallLoad(false)
-                setReload(!reload)
-
-              }}>{income?.data?.tokensReceived ? "Already Purchased!!" : "Buy Token (5000)"}</button>
-              <h6 className="preview-subject">Tokens can be purchase only once by one wallet</h6>
-
-            </div>
-          </div>
-        </div>
-
-      </div> */}
 
     </div >
   );

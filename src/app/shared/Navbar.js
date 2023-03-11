@@ -72,13 +72,14 @@ function Navbar() {
     <nav className="navbar p-0 fixed-top d-flex flex-row">
       {showModal ? <Modal></Modal> : ""}
 
-      <div className="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-        <Link className="navbar-brand brand-logo-mini" to="/"><img src={require('../../assets/images/logo-mini.svg')} alt="logo" /></Link>
-      </div>
+      {/* <div className="navbar-brand d-flex  align-items-center justify-content-center">
+        <img src={require('../../assets/images/logo-mini.svg')} alt="logo" />
+      </div> */}
       <div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-        <button className="navbar-toggler align-self-center" type="button" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
-          {/* <span className="mdi mdi-menu"></span> */}
-        </button>
+        <img src={require('../../assets/images/logo.png')} alt="logo" />
+        {/* <button className="navbar-toggler align-self-center" type="button" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
+          <span className="mdi mdi-menu"></span>
+        </button> */}
         {/* <ul className="navbar-nav w-100">
             <li className="nav-item w-100">
               <form className="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
@@ -89,9 +90,10 @@ function Navbar() {
         <ul className="navbar-nav navbar-nav-right">
 
           {income?.data?.tokensReceived &&
-            <div className="text-md-center text-xl-left">
+            <div className="text-md-center ">
               <h6 className="mb-1">Referrer</h6>
-              <p className="text-muted mb-0" style={{ marginRight: "10px" }}>{income?.data?.referrer ? income?.data?.referrer : ""}</p>
+              <button className="btn btn-outline-light btn-rounded get-started-btn" style={{ marginRight: "10px" }} type="button" >{income?.data?.referrer ? income?.data?.referrer?.slice(0, 4) + "..." + income?.data?.referrer?.slice(38, 42) : ""}</button>
+              {/* <p className="text-muted mb-0" style={{marginRight: "10px"}}>{income?.data?.referrer ? income?.data?.referrer?.slice(0,3)+"..."+ income?.data?.referrer?.slice(39,41): ""}</p> */}
             </div>
           }
 
