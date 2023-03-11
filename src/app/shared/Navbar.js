@@ -1,8 +1,6 @@
 import React, { Component,useState,useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Trans } from 'react-i18next';
-import { connectWithMetamask } from '../helpers/setterFunction';
 import Modal from '../connectWallet/Modal/Modal';
 import Cookies from 'js-cookie';
 import toast from "react-hot-toast";

@@ -2,6 +2,39 @@
     {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "_referrer",
+                "type": "address"
+            }
+        ],
+        "name": "buyToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "enableWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "newToken",
+                "type": "address"
+            }
+        ],
+        "name": "setToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "uint256",
                 "name": "_price",
                 "type": "uint256"
@@ -23,25 +56,26 @@
     {
         "inputs": [
             {
-                "internalType": "address",
-                "name": "_referrer",
+                "internalType": "contract IERC20",
+                "name": "_token",
                 "type": "address"
             }
         ],
-        "name": "buyToken",
+        "name": "withdrawDumpedtokens",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "convertAmountToUsd",
+        "inputs": [],
+        "name": "withdrawLevelIncome",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAmountToBePaid",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -50,13 +84,6 @@
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "enableWithdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -96,19 +123,6 @@
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "contract IERC20",
-                "name": "newToken",
-                "type": "address"
-            }
-        ],
-        "name": "setToken",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -156,26 +170,6 @@
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "contract IERC20",
-                "name": "_token",
-                "type": "address"
-            }
-        ],
-        "name": "withdrawDumpedtokens",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "withdrawLevelIncome",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]
