@@ -52,18 +52,18 @@ export const connectWithMetamask = async () => {
             .then(async (res) => {
                 console.log(res[0], window.ethereum.networkVersion)
                 // let resp = await checkIfOwnerExist({ walletAddress: res[0] })
-                
+
                 Cookies.set("account", res[0], {
                     expires: 7,
-                  });
-                
-                    // localStorage.setItem("account", res[0])
-                    localStorage.setItem("connectedrole", "owner")
-                    localStorage.setItem("chainId", window.ethereum.networkVersion)
-                    localStorage.setItem("decrypt_redeem_connectedWallet", "metamask")
-                    console.log("Provider meta", window?.ethereum)
-                    window.location.reload()
-                
+                });
+
+                // localStorage.setItem("account", res[0])
+                localStorage.setItem("connectedrole", "owner")
+                localStorage.setItem("chainId", window.ethereum.networkVersion)
+                localStorage.setItem("decrypt_redeem_connectedWallet", "metamask")
+                console.log("Provider meta", window?.ethereum)
+                window.location.reload()
+
             })
     } else {
         alert("install metamask extension!!")

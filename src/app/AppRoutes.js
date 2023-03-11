@@ -1,27 +1,25 @@
 import React, { Component, Suspense, lazy } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-
+import { Switch, Route } from 'react-router-dom';
 import Spinner from '../app/shared/Spinner';
-
 const Dashboard = lazy(() => import('./dashboard/Dashboard'));
 
-const Buttons = lazy(() => import('./basic-ui/Buttons'));
-const Dropdowns = lazy(() => import('./basic-ui/Dropdowns'));
-const Typography = lazy(() => import('./basic-ui/Typography'));
+// const Buttons = lazy(() => import('./basic-ui/Buttons'));
+// const Dropdowns = lazy(() => import('./basic-ui/Dropdowns'));
+// const Typography = lazy(() => import('./basic-ui/Typography'));
 
-const BasicElements = lazy(() => import('./form-elements/BasicElements'));
+// const BasicElements = lazy(() => import('./form-elements/BasicElements'));
 
-const BasicTable = lazy(() => import('./tables/BasicTable'));
+// const BasicTable = lazy(() => import('./tables/BasicTable'));
 
-const Mdi = lazy(() => import('./icons/Mdi'));
+// const Mdi = lazy(() => import('./icons/Mdi'));
 
-const ChartJs = lazy(() => import('./charts/ChartJs'));
+// const ChartJs = lazy(() => import('./charts/ChartJs'));
 
 const Error404 = lazy(() => import('./error-pages/Error404'));
 const Error500 = lazy(() => import('./error-pages/Error500'));
 
-const Login = lazy(() => import('./user-pages/Login'));
-const Register1 = lazy(() => import('./user-pages/Register'));
+// const Login = lazy(() => import('./user-pages/Login'));
+// const Register1 = lazy(() => import('./user-pages/Register'));
 
 
 class AppRoutes extends Component {
@@ -30,7 +28,7 @@ class AppRoutes extends Component {
       <Suspense fallback={<Spinner />}>
         <Switch>
           <Route exact path="/" component={Dashboard} />
-          <Route exact path="/:refAddress" component={Dashboard} />
+          <Route exact path="/refAdd/:refAddress" component={Dashboard} />
           <Route path="/error-pages/error-404" component={Error404} />
           <Route path="/error-pages/error-500" component={Error500} />
 

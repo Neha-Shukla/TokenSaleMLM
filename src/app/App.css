@@ -31194,6 +31194,7 @@ code {
 /* Dashboard */
 .refferalLink {
   width: 100%;
+  cursor: text;
 }
 
 #refAddress {

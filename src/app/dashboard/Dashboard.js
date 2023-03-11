@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { TodoListComponent } from '../apps/TodoList'
-import { handleBuyToken, tokenSaleContract, userIncome } from '../helpers/setterFunction';
+import { handleBuyToken, handleCopyToClipboard, tokenSaleContract, userIncome } from '../helpers/setterFunction';
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { DEFAULT_REF } from '../helpers/constants';
@@ -29,14 +29,14 @@ function Dashboard() {
         let acc = Cookies.get("account")
         if (acc) {
           setAccount(acc);
-          let network = await checkNetwork();
-          console.log("network chain is", network);
-          if (network == false) {
-            alert("Please switch newtork to BNB");
-            await switchNetwork();
+          // let network = await checkNetwork();
+          // console.log("network chain is", network);
+          // if (network == false) {
+          //   alert("Please switch newtork to BNB");
+          //   await switchNetwork();
 
-            // return;
-          }
+          //   // return;
+          // }
           let _income = await userIncome(acc);
           console.log("user income is", _income);
           setIncome(_income)
@@ -59,19 +59,19 @@ function Dashboard() {
     < div >
 
       {console.log("income", income)}
-      
-        {loading ?
-          <div className='d-flex loader'>
-         <BallTriangle
-          height={100}
-          width={100}
-          radius={5}
-          color="#4fa94d"
-          ariaLabel="ball-triangle-loading"
-          wrapperClass={{}}
-          wrapperStyle=""
-          visible={true}
-        /></div> : ""}
+
+      {loading ?
+        <div className='d-flex loader'>
+          <BallTriangle
+            height={100}
+            width={100}
+            radius={5}
+            color="#4fa94d"
+            ariaLabel="ball-triangle-loading"
+            wrapperClass={{}}
+            wrapperStyle=""
+            visible={true}
+          /></div> : ""}
 
       {functionCallLoad ? <InfinitySpin
         width='200'
@@ -89,11 +89,6 @@ function Dashboard() {
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h2 className="mb-0">{income?.data?.levelIncome ? ethers.utils.formatEther(income?.data?.levelIncome?.toString()).toString() : 0}</h2>
 
-                    {Number(income?.data?.levelIncome) > 0 &&
-                      <>
-                        <br></br>
-                        <h5>Next Withdraw In</h5>
-                        <Clock deadline={moment.utc((Number(income?.data?.nextWithdrawnTime)) * 1000).local().format()}></Clock></>}
                   </div>
                 </div>
                 {console.log("Number(income?.data?.nextWithdrawnTime) < new Date().valueOf()", Number(income?.data?.nextWithdrawnTime), new Date().valueOf())}
@@ -113,6 +108,30 @@ function Dashboard() {
             </div>
           </div>
         </div>
+        {Number(income?.data?.levelIncome) > 0 &&
+          <div className="col-sm-4 grid-margin ">
+            <div className="card">
+              <div className="card-body">
+                <h5>Next Withdraw In</h5>
+                <div className="row">
+                  <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                    <div className="d-flex d-sm-block d-md-flex align-items-center">
+
+                      <>
+
+                        <Clock deadline={moment.utc((Number(income?.data?.nextWithdrawnTime)) * 1000).local().format()}></Clock></>
+
+                    </div>
+                  </div>
+                  <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                    <i className="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
         <div className="col-sm-4 grid-margin ">
           <div className="card">
             <div className="card-body">
@@ -171,7 +190,11 @@ function Dashboard() {
           <div className="card">
             <div className="card-body">
               <h4 className="card-title">REFERRAL LINK</h4>
-              <input type="text" className='refferalLink' disabled={true} value={account ? `http://localhost:3000/refAdd/${account}` : ""}></input>
+              <div onClick={() => {
+                handleCopyToClipboard(`http://localhost:3000/refAdd/${account}`)
+              }}>
+                <input type="text" className='refferalLink' disabled={true} value={account ? `http://localhost:3000/refAdd/${account}` : ""}></input>
+              </div>
             </div>
           </div>
         </div>
