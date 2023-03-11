@@ -5,14 +5,16 @@ import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { DEFAULT_REF } from '../helpers/constants';
 import { ethers } from "ethers";
-import { withdrawLevelIncome,checkNetwork,switchNetwork } from '../helpers/setterFunction';
+import { checkNetwork,switchNetwork } from '../helpers/setterFunction';
+import { withdrawLevelIncome } from '../helpers/setterFunction';
+import { BallTriangle, InfinitySpin } from 'react-loader-spinner'
 
 function Dashboard() {
   const [account, setAccount] = useState();
   const [income, setIncome] = useState({})
   const [loading, setLoading] = useState(false)
   const [reload, setReload] = useState(false)
-
+  const [functionCallLoad, setFunctionCallLoad] = useState(false)
   const { refAddress } = useParams()
   console.log("refAddress", refAddress)
 
@@ -44,9 +46,27 @@ function Dashboard() {
 
   return (
     < div >
-      {loading ? "Loading..." : ""}
+
       {console.log("income", income)}
+      <div className='d-flex loader'>
+        {loading ? <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="#4fa94d"
+          ariaLabel="ball-triangle-loading"
+          wrapperClass={{}}
+          wrapperStyle=""
+          visible={true}
+        /> : ""}</div>
+
+      {functionCallLoad ? <InfinitySpin
+        width='200'
+        color="#4fa94d"
+      /> : ""}
+
       <div div className="row" >
+
         <div className="col-sm-4 grid-margin">
           <div className="card">
             <div className="card-body">
@@ -58,8 +78,10 @@ function Dashboard() {
                   </div>
                 </div>
                 <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                  <button className="btn btn-outline-light btn-rounded get-started-btn withdraw-btn" disabled={!income?.isWithdrawEnabled || Number(ethers.utils.formatEther(income?.levelIncome?.toString()).toString()) <= 0} onClick={() => {
-                    withdrawLevelIncome(account)
+                  <button className="btn btn-outline-light btn-rounded get-started-btn withdraw-btn" disabled={!income?.isWithdrawEnabled || Number(ethers.utils.formatEther(income?.levelIncome?.toString()).toString()) <= 0} onClick={async () => {
+                    setFunctionCallLoad(true)
+                    await withdrawLevelIncome(account)
+                    setFunctionCallLoad(false)
                     setReload(!reload)
                   }}>Withdraw</button>
                 </div>
@@ -74,7 +96,7 @@ function Dashboard() {
               <div className="row">
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
-                    <h2 className="mb-0">{income?.data?.referralIncome ? ethers.utils.parseEther(income?.data?.referralIncome?.toString()).toString() : 0}</h2>
+                    <h2 className="mb-0">{income?.data?.referralIncome ? ethers.utils.formatEther(income?.data?.referralIncome?.toString()).toString() : 0}</h2>
                   </div>
                 </div>
                 <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
@@ -101,6 +123,23 @@ function Dashboard() {
             </div>
           </div>
         </div>
+        {income?.data?.tokensReceived &&
+          <div className="col-sm-4 grid-margin">
+            <div className="card">
+              <div className="card-body">
+                <h5>Referrer</h5>
+                <div className="row">
+                  <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                    <div className="d-flex d-sm-block d-md-flex align-items-center">
+                      <h7 className="mb-0">{income?.data?.referrer ? income?.data?.referrer : ""}</h7>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       </div >
 
       <div className="row">
