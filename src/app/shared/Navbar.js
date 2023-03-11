@@ -5,30 +5,38 @@ import Modal from '../connectWallet/Modal/Modal';
 import Cookies from 'js-cookie';
 import toast from "react-hot-toast";
 import { getBalance } from '../helpers/getterFunction';
+import eventEmitter from '../events/events';
 function Navbar() {
 
   const [showModal, setShowModal] = useState(false);
   const [account, setAccount] = useState();
   const [bnbBalance, setBnbBalance] = useState(0);
-  useEffect(() => {
-    async function getAccount() {
-      try {
-        let acc = Cookies.get("account")
-        if (acc) {
-          setAccount(acc);
-          let bal = await getBalance(acc);
-          console.log("balance is---->", bal);
-          setBnbBalance(bal);
-        }
-        console.log("account is ----->", acc);
-      }
-      catch (err) {
-        console.log("err", err)
-      }
-    }
-    getAccount();
+  const [reload, setReload] = useState(false)
 
-  }, [Cookies.get("account")])
+  useEffect(() => {
+    getAccount();
+  }, [Cookies.get("account"), reload])
+
+  async function getAccount() {
+    try {
+      let acc = Cookies.get("account")
+      if (acc) {
+        setAccount(acc);
+        let bal = await getBalance(acc);
+        console.log("balance is---->", bal);
+        setBnbBalance(bal);
+      }
+      console.log("account is ----->", acc);
+    }
+    catch (err) {
+      console.log("err", err)
+    }
+  }
+  eventEmitter.removeAllListeners("ReloadAccount")
+  eventEmitter.on("ReloadAccount", () => {
+    setReload(!reload)
+  })
+
 
   const logout = () => {
     Cookies.remove("account");

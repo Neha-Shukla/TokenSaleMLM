@@ -10,7 +10,9 @@ import { withdrawLevelIncome } from '../helpers/setterFunction';
 import { BallTriangle, InfinitySpin } from 'react-loader-spinner'
 import moment from "moment"
 import Clock from './clock';
-
+import { getCurrentProvider, getProvider } from '../connectWallet';
+import eventEmitter from '../events/events';
+const targetNetworkId = '0x61';
 function Dashboard() {
   const [account, setAccount] = useState();
   const [income, setIncome] = useState({})
@@ -20,7 +22,40 @@ function Dashboard() {
   const { refAddress } = useParams()
   console.log("refAddress", refAddress)
 
+  useEffect(() => {
+    const fetch = async () => {
+      let provider = await getProvider()
+      provider.on("accountsChanged", (accounts) => {
+        console.log(accounts);
+        Cookies.set("account", accounts[0], {
+          expires: 7,
+        });
+        eventEmitter.emit("ReloadAccount")
+        setReload(!reload)
+      });
 
+      // Subscribe to chainId change
+      provider.on("chainChanged", async (chainId) => {
+        console.log(chainId);
+        await provider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: targetNetworkId }],
+        });
+        setReload(!reload)
+      });
+
+      // Subscribe to session connection
+      provider.on("connect", () => {
+        console.log("connect");
+      });
+
+      // Subscribe to session disconnection
+      provider.on("disconnect", (code, reason) => {
+        console.log(code, reason);
+      });
+    }
+    fetch()
+  })
 
   useEffect(() => {
     async function getContract() {
@@ -29,14 +64,7 @@ function Dashboard() {
         let acc = Cookies.get("account")
         if (acc) {
           setAccount(acc);
-          let network = await checkNetwork();
-          console.log("network chain is", network);
-          if (network === false) {
-            alert("Please switch newtork to BNB");
-            await switchNetwork();
 
-            // return;
-          }
           let _income = await userIncome(acc);
           console.log("user income is", _income);
           setIncome(_income)
@@ -207,9 +235,12 @@ function Dashboard() {
             <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
               <input id="refAddress" type="text" disabled={true} value={ethers.utils.isAddress(refAddress) ? refAddress : (DEFAULT_REF + " (default)")}></input>
-              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived} onClick={() => {
+              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={() => {
+                setFunctionCallLoad(true)
                 handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
+                setFunctionCallLoad(false)
                 setReload(!reload)
+
               }}>{income?.data?.tokensReceived ? "Already Purchased!!" : "Buy Token (5000)"}</button>
               <h6 className="preview-subject">Tokens can be purchase only once by one wallet</h6>
 

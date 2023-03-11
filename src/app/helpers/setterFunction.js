@@ -134,9 +134,9 @@ export const checkNetwork = async () => {
 };
 
 export const switchNetwork = async () => {
-let provider = await getCurrentProvider()
+  let provider = await getCurrentProvider()
 
-  await window.ethereum.request({
+  await provider.request({
     method: 'wallet_switchEthereumChain',
     params: [{ chainId: targetNetworkId }],
   });

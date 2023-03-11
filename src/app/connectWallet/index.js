@@ -4,7 +4,6 @@
 // import { messages } from "config/messages";
 // import { adminLogout } from "apiServices";
 import { ethers, providers } from "ethers";
-import { useEffect, useState } from "react";
 import WalletConnectProvider from "@walletconnect/web3-provider"
 import Cookies from 'js-cookie';
 // import { Logout } from "helpers/setters";
@@ -88,6 +87,25 @@ export const getCurrentProvider = async () => {
         _provider = new ethers.providers.Web3Provider(window.ethereum)
         return _provider
     }
+}
+
+export const getProvider = async () => {
+    let wallet = localStorage.getItem("decrypt_redeem_connectedWallet")
+    let _provider
+    if (wallet === "walletConnect") {
+        _provider = new WalletConnectProvider({
+            rpc: supportedRpcs,
+        });
+        //  Wrap with Web3Provider from ethers.js
+        const web3Provider = new providers.Web3Provider(_provider);
+        await _provider.enable();
+        return _provider
+    }
+    else if (wallet === "metamask") {
+        _provider = new ethers.providers.Web3Provider(window.ethereum)
+        return window.ethereum
+    }
+
 }
 
 export const getCurrentAccount = async () => {
