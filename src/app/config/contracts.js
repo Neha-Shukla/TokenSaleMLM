@@ -1,3 +1,3 @@
-export const tokenSale = "0xf6e29B57e9E404CF2b3673f68b2673777a8BcC68";
-export const TokenBEP20 = "0x626FEE43dFd59cb4fAa38517fBece343B695F2D6";
+export const tokenSale = "0xC1c3DCa58574447bAA559d5A399A03233aF8CFfC";
+export const TokenBEP20 = "0xB8c1969f5ED3b196dF6aeb861122e88C3B032f8B";
 export const PriceFeed = "0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526";

@@ -233,7 +233,7 @@ function Dashboard() {
             <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
               <input id="refAddress" type="text" disabled={!account} value={refAddress} onChange={(e) => { setRefAddress(e.target.value) }}></input>
-              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={() => {
+              <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={async () => {
 
                 if (refAddress?.toLowerCase() === account?.toLowerCase()) {
                   toast.error("You can't be your own referrer");
@@ -244,9 +244,9 @@ function Dashboard() {
                   return
                 }
                 setFunctionCallLoad(true)
-
-                handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
+                await handleBuyToken(account, ethers.utils.isAddress(refAddress) ? refAddress : DEFAULT_REF)
                 setReload(!reload)
+                setFunctionCallLoad(false)
               }}>
                 {income?.data?.tokensReceived ? "Already Purchased!!" : "Buy Token (5000)"}</button>
               <br></br>

@@ -72,7 +72,7 @@ export const handleBuyToken = async (account, ref) => {
     }
     catch (err) {
       console.log("errrr", err)
-      toast.error("Error while buying.." + err.data?.message)
+      toast.error("Error while buying.." + err.code)
       console.log("error", err.code)
       return false
     }
