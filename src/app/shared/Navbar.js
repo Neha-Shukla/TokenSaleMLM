@@ -89,14 +89,13 @@ function Navbar() {
           </ul> */}
         <ul className="navbar-nav navbar-nav-right">
 
-          {income?.data?.tokensReceived &&
+          {/* {income?.data?.tokensReceived &&
             <div className="text-md-center ">
               <h6 className="mb-1">Referrer</h6>
               <button className="btn btn-outline-light btn-rounded get-started-btn" style={{ marginRight: "10px" }} type="button" >{income?.data?.referrer ? income?.data?.referrer?.slice(0, 4) + "..." + income?.data?.referrer?.slice(38, 42) : ""}</button>
-              {/* <p className="text-muted mb-0" style={{marginRight: "10px"}}>{income?.data?.referrer ? income?.data?.referrer?.slice(0,3)+"..."+ income?.data?.referrer?.slice(39,41): ""}</p> */}
-            </div>
+               </div>
           }
-
+        */}
           <div className="text-md-center text-xl-left">
             <h6 className="mb-1">Balance</h6>
             <p className="text-muted mb-0">{bnbBalance} BNB</p>
