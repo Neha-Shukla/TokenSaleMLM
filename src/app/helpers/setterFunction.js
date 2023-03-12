@@ -76,7 +76,7 @@ export const handleBuyToken = async (account, ref) => {
       console.log("error", err.code)
       return false
     }
-    let priceLimit = new BigNumber(es.toString()).plus(new BigNumber(es.toString()).multipliedBy(0.1))
+    let priceLimit = new BigNumber(es.toString()).plus(new BigNumber(es.toString()).multipliedBy(0.05))
     let data = await contract.buyToken(ref, { from: account, value: amount, gasLimit: Math.ceil(parseFloat(priceLimit.toString())) });
     console.log("userIncome data is", data)
     data = await data.wait()
@@ -110,7 +110,7 @@ export const withdrawLevelIncome = async (account) => {
       console.log("error", err.code)
       return false
     }
-    let priceLimit = new BigNumber(es.toString()).plus(new BigNumber(es.toString()).multipliedBy(0.1))
+    let priceLimit = new BigNumber(es.toString()).plus(new BigNumber(es.toString()).multipliedBy(0.05))
 
 
     let data = await contract.withdrawLevelIncome({ from: account, gasLimit: Math.ceil(parseFloat(priceLimit.toString())) });

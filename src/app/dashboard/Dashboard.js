@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-// import { TodoListComponent } from '../apps/TodoList'
 import { handleBuyToken, handleCopyToClipboard, tokenSaleContract, userIncome } from '../helpers/setterFunction';
 import Cookies from 'js-cookie';
-import { useParams } from 'react-router-dom';
 import { CHAIN_ID, DEFAULT_REF } from '../helpers/constants';
 import { ethers } from "ethers";
-import { checkNetwork, switchNetwork } from '../helpers/setterFunction';
 import { withdrawLevelIncome } from '../helpers/setterFunction';
 import { BallTriangle, InfinitySpin } from 'react-loader-spinner'
 import moment from "moment"
 import Clock from './clock';
-import { getCurrentProvider, getProvider } from '../connectWallet';
+import { getProvider } from '../connectWallet';
 import eventEmitter from '../events/events';
 import { toast } from 'react-hot-toast';
 const targetNetworkId = '0x61';
@@ -61,6 +58,7 @@ function Dashboard() {
   useEffect(() => {
     async function getContract() {
       setLoading(true)
+      eventEmitter.emit("ReloadAccount")
       try {
         let acc = Cookies.get("account")
         if (acc) {
@@ -137,7 +135,8 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        {Number(income?.data?.levelIncome) > 0 &&
+        {/*
+       {Number(income?.data?.levelIncome) > 0 &&
           <div className="col-sm-4 grid-margin ">
             <div className="card">
               <div className="card-body">
@@ -160,6 +159,8 @@ function Dashboard() {
             </div>
           </div>
         }
+      */}
+
 
         <div className="col-sm-4 grid-margin ">
           <div className="card">
@@ -232,7 +233,7 @@ function Dashboard() {
 
             <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
-              <input id="refAddress" type="text" disabled={!account} value={refAddress} onChange={(e) => { setRefAddress(e.target.value) }}></input>
+              <input id="refAddress" type="text" disabled={!account || income?.data?.tokensReceived} value={income?.data?.tokensReceived ? income?.data?.referrer : refAddress} onChange={(e) => { setRefAddress(e.target.value) }}></input>
               <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={async () => {
 
                 if (refAddress?.toLowerCase() === account?.toLowerCase()) {
