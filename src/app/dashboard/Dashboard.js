@@ -235,7 +235,6 @@ function Dashboard() {
               <label for="refAddress">Referred By</label>
               <input id="refAddress" type="text" disabled={!account || income?.data?.tokensReceived} value={income?.data?.tokensReceived ? income?.data?.referrer : refAddress} onChange={(e) => { setRefAddress(e.target.value) }}></input>
               <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={async () => {
-
                 if (refAddress?.toLowerCase() === account?.toLowerCase()) {
                   toast.error("You can't be your own referrer");
                   return

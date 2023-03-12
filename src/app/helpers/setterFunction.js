@@ -23,6 +23,7 @@ export const exportInstance = async (SCAddress, ABI) => {
   console.log("pro", pro)
   let provider = pro;
   let signer = provider.getSigner();
+  console.log("heree")
   let a = new ethers.Contract(SCAddress, ABI, signer);
   if (a) {
     return a;
@@ -61,7 +62,7 @@ export const handleBuyToken = async (account, ref) => {
   // }
   try {
     let contract = await tokenSaleContract();
-    console.log("contract is---->", contract);
+    console.log("contract is---->", contract, await contract.getAmountToBePaid());
     let amount = (await contract.getAmountToBePaid()).toString()
     let es
     try {
