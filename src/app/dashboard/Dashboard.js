@@ -100,10 +100,10 @@ function Dashboard() {
             visible={true}
           /></div> : ""}
 
-      {functionCallLoad ? <InfinitySpin
+      {functionCallLoad ? <div className='d-flex loader'> <InfinitySpin
         width='200'
         color="#4fa94d"
-      /> : ""}
+      /></div> : ""}
 
       <div div className="row" >
 
