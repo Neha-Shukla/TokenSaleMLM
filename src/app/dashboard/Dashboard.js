@@ -10,6 +10,7 @@ import Clock from './clock';
 import { getProvider } from '../connectWallet';
 import eventEmitter from '../events/events';
 import { toast } from 'react-hot-toast';
+import { useLocation, useParams } from 'react-router-dom';
 const targetNetworkId = '0x61';
 function Dashboard() {
   const [account, setAccount] = useState();
@@ -17,13 +18,21 @@ function Dashboard() {
   const [loading, setLoading] = useState(false)
   const [reload, setReload] = useState(false)
   const [functionCallLoad, setFunctionCallLoad] = useState(false)
-  const [refAddress, setRefAddress] = useState()
+  // const [refAddress, setRefAddress] = useState()
+  // const { refAddress } = useParams()
+
+  const { search } = useLocation();
+
+  const parameters = new URLSearchParams(search);
+
+  const refAddress = parameters.get('refAddress');
   console.log("refAddress", refAddress)
 
   useEffect(() => {
+
     const fetch = async () => {
       let provider = await getProvider()
-
+      console.log("address", refAddress)
       console.log("proo", provider)
 
       if (provider) {
@@ -221,9 +230,9 @@ function Dashboard() {
             <div className="card-body">
               <h4 className="card-title">REFERRAL LINK</h4>
               <div onClick={() => {
-                handleCopyToClipboard(`https://lucreway.com/refAdd/${account}`)
+                handleCopyToClipboard(`https://lucreway.com/?refAdd=${account}`)
               }}>
-                <input type="text" className='refferalLink' disabled={true} value={account && income?.data?.tokensReceived ? `https://lucreway.com/${account}` : ""}></input>
+                <input type="text" className='refferalLink' disabled={true} value={account && income?.data?.tokensReceived ? `https://lucreway.com/?refAddress=${account}` : ""}></input>
               </div>
             </div>
           </div>
@@ -233,7 +242,9 @@ function Dashboard() {
 
             <div className="card-body buy-token">
               <label for="refAddress">Referred By</label>
-              <input id="refAddress" type="text" disabled={!account || income?.data?.tokensReceived} value={income?.data?.tokensReceived ? income?.data?.referrer : refAddress} onChange={(e) => { setRefAddress(e.target.value) }}></input>
+              <input id="refAddress" type="text" disabled={!account || income?.data?.tokensReceived} value={income?.data?.tokensReceived ? income?.data?.referrer : refAddress} onChange={(e) => {
+                // setRefAddress(e.target.value)
+              }}></input>
               <button className="btn btn-outline-light btn-rounded get-started-btn buytoken-btn" disabled={income?.data?.tokensReceived || !account} onClick={async () => {
                 if (refAddress?.toLowerCase() === account?.toLowerCase()) {
                   toast.error("You can't be your own referrer");
